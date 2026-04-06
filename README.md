@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Climapp
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.6.
@@ -57,3 +58,7 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+=======
+# webdeclima
+Una web que nos ayuda a ver el clima de una forma sencilla y ver datos básicos como predicción de la semana precipitación,  viento y probabilidad de lluvia
+>>>>>>> bbd6745fe878343b31e5f515dc432c9fb352f968
