@@ -1,0 +1,119 @@
+<main class="app-shell">
+  <section class="hero-panel">
+    <p class="eyebrow">Clima en tiempo real</p>
+    <h1>Explora el clima de cualquier ciudad</h1>
+    <p class="lead">
+      Busca una ciudad y revisa temperatura actual, sensacion termica y un
+      pronostico de 5 dias en una sola vista.
+    </p>
+
+    <form class="search-card" (submit)="onSubmit($event)">
+      <label class="search-label" for="city-search">Ciudad</label>
+      <div class="search-row">
+        <input
+          id="city-search"
+          type="text"
+          [formControl]="searchControl"
+          placeholder="Ej. Ciudad de Mexico, Madrid, Bogota"
+          autocomplete="off"
+        />
+        <button type="submit" [disabled]="isLoading()">Ver clima</button>
+      </div>
+
+      @if (suggestions().length) {
+        <div class="suggestions">
+          @for (city of suggestions(); track city.label) {
+            <button
+              class="suggestion-chip"
+              type="button"
+              (click)="selectSuggestion(city)"
+            >
+              {{ city.label }}
+            </button>
+          }
+        </div>
+      }
+
+      @if (isLoading()) {
+        <p class="status-text">Consultando el clima mas reciente...</p>
+      }
+
+      @if (errorMessage()) {
+        <p class="status-text error">{{ errorMessage() }}</p>
+      }
+    </form>
+  </section>
+
+  <section [class]="cardTheme()">
+    @if (weather(); as report) {
+      <header class="weather-header">
+        <div>
+          <p class="location">{{ report.location }}</p>
+          <p class="updated">Actualizado {{ report.updatedAtLabel }}</p>
+        </div>
+
+        <div class="current-mark">
+          <span class="current-icon">{{ report.current.icon }}</span>
+          <div>
+            <h2>{{ report.current.temperature }}°</h2>
+            <p>{{ report.current.description }}</p>
+          </div>
+        </div>
+      </header>
+
+      <section class="stats-grid">
+        <article class="stat-card">
+          <span>Sensacion</span>
+          <strong>{{ report.current.apparentTemperature }}°C</strong>
+        </article>
+        <article class="stat-card">
+          <span>Humedad</span>
+          <strong>{{ report.current.humidity }}%</strong>
+        </article>
+        <article class="stat-card">
+          <span>Viento</span>
+          <strong>{{ report.current.windSpeed }} km/h</strong>
+        </article>
+        <article class="stat-card">
+          <span>Precipitacion</span>
+          <strong>{{ report.current.precipitation }} mm</strong>
+        </article>
+        <article class="stat-card">
+          <span>Amanecer</span>
+          <strong>{{ report.sunriseLabel }}</strong>
+        </article>
+        <article class="stat-card">
+          <span>Atardecer</span>
+          <strong>{{ report.sunsetLabel }}</strong>
+        </article>
+      </section>
+
+      <section class="forecast-section">
+        <div class="section-heading">
+          <p>Pronostico de 5 dias</p>
+        </div>
+
+        <div class="forecast-grid">
+          @for (day of report.daily; track day.date) {
+            <article class="forecast-card">
+              <p class="forecast-day">{{ day.weekday }}</p>
+              <span class="forecast-icon">{{ day.icon }}</span>
+              <p class="forecast-label">{{ day.description }}</p>
+              <p class="forecast-temp">{{ day.max }}° / {{ day.min }}°</p>
+              <p class="forecast-rain">Lluvia: {{ day.precipitationProbability }}%</p>
+            </article>
+          }
+        </div>
+      </section>
+    } @else {
+      <div class="empty-state">
+        <p class="empty-kicker">Tu panel aparecera aqui</p>
+        <h2>Busca una ciudad para comenzar</h2>
+        <p>
+          La app usa Open-Meteo para encontrar la ubicacion y mostrar el
+          pronostico actual.
+        </p>
+      </div>
+    }
+  </section>
+</main>
